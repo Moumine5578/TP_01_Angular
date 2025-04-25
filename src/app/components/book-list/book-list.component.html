@@ -1,21 +1,25 @@
 <h1>Ma bibliothèque</h1>
 
+<div *ngIf="message" class="alert">
+  {{ message }}
+</div>
 
-<button routerLink="/books/add">
+
+<button class="btn btn-primary btn-rounded m-2"  routerLink="/books/add">
   Ajouter un livre
 </button>
 
 <div class="books-container">
   <!-- TODO 13 : Les données sont passées à la liste mais pas affichées. Affiche les données -->
-  <div *ngIf="data && data.length > 0; else noBooks">
+  <div *ngIf="books && books.length > 0; else noBooks">
     <div class="book-card" *ngFor="let book of books">
       <div class="book-info">
-        <h2>{{ book.title }}</h2> <!-- TODO 14: Appliquer la directive highlight à ce champ -->
+        <h2 [appHighlight]="true">  {{ book.title }}</h2> <!-- TODO 14: Appliquer la directive highlight à ce champ -->
         <p>{{ book.author }}</p>
         <p>
           <!-- TODO 15: Afficher la description du livre en utilisant un pour limiter à 20 caractères et ajouter des points de suspension si la description est plus longue.
            Il faut utiliser un pipe existant ou en créer un nouveau pipe. Libre choix -->
-          {{ book.description }}
+          {{ book.description | truncate:20 }}
         </p>
         <p>Catégorie: {{ book.category }}</p>
         <p>Note: {{ book.rating }}</p>
@@ -23,9 +27,9 @@
       </div>
       
       <div class="book-actions">
-        <button routerLink="/books/{{book.id}}">Détails</button>
-        <button (click)="toggleFavorite(book)">{{ book.isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris' }}</button>
-        <button (click)="deleteBook(book.id)">Supprimer</button>
+        <button class="btn btn-primary m-1" routerLink="/books/{{book.id}}">Détails</button>
+        <button class="btn btn-success btn-rounded m-1"  (click)="toggleFavorite(book)">{{ book.isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris' }}</button>
+        <button class="btn btn-danger m-1"(click)="deleteBook(book.id)">Supprimer</button>
       </div>
     </div>
   </div>
